@@ -1,1 +1,132 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Brainrot Finder</title><style>body {  background: #10101b;  color: white;  font-family: Arial, sans-serif;  padding: 16px;}h1 { color: #a78bfa; }input, select, button {  box-sizing: border-box;  width: 100%;  padding: 12px;  margin: 5px 0;  border: 0;  border-radius: 8px;  font-size: 16px;}button {  background: #8b5cf6;  color: white;  font-weight: bold;}.card {  background: #242438;  border-radius: 10px;  padding: 12px;  margin: 8px 0;}.name { font-weight: bold; }.rarity { color: #c4b5fd; }#count { color: #a5b4fc; }</style></head><body><h1>🧠 Brainrot Finder</h1><p>Search and filter your favorite Brainrots!</p><input id="search" placeholder="Search Brainrot name..."><select id="rarity">  <option value="All">All rarities</option>  <option>Common</option>  <option>Rare</option>  <option>Epic</option>  <option>Legendary</option>  <option>Mythic</option>  <option>Brainrot God</option>  <option>Secret</option>  <option>OG</option>  <option>Special</option>  <option>Admin</option></select><button onclick="showAll()">Show All Brainrots</button><p id="count"></p><div id="results"></div><script>const brainrots = [  {name:"Noobini Pizzanini",rarity:"Common"},  {name:"Lirilì Larilà",rarity:"Common"},  {name:"Tim Cheese",rarity:"Common"},  {name:"Fluriflura",rarity:"Common"},  {name:"Talpa Di Fero",rarity:"Common"},  {name:"Svinina Bombardino",rarity:"Common"},  {name:"Noobini Santanini",rarity:"Common"},  {name:"Raccooni Jandelini",rarity:"Common"},  {name:"Tartaragno",rarity:"Common"},  {name:"Pipi Kiwi",rarity:"Common"},  {name:"Pipi Corni",rarity:"Common"},  {name:"Holy Arepa",rarity:"Common"},  {name:"Trippi Troppi",rarity:"Rare"},  {name:"Gangster Footera",rarity:"Rare"},  {name:"Bandito Bobritto",rarity:"Rare"},  {name:"Boneca Ambalabu",rarity:"Rare"},  {name:"Cacto Hipopotamo",rarity:"Rare"},  {name:"Cupcake Koala",rarity:"Rare"},  {name:"Frogo Elfo",rarity:"Rare"},  {name:"Ta Ta Ta Ta Sahur",rarity:"Rare"},  {name:"Tric Trac Baraboom",rarity:"Rare"},  {name:"Pipi Avocado",rarity:"Rare"},  {name:"Pengolino Nuvoletto",rarity:"Rare"},  {name:"Cappuccino Assassino",rarity:"Epic"},  {name:"Brr Brr Patapim",rarity:"Epic"},  {name:"Ballerina Cappuccina",rarity:"Epic"},  {name:"Trulimero Trulicina",rarity:"Epic"},  {name:"Avocadini Guffo",rarity:"Epic"},  {name:"Bananita Dolphinita",rarity:"Epic"},  {name:"Penguin Tree",rarity:"Epic"},  {name:"Perochello Lemonchello",rarity:"Epic"},  {name:"Salamino Penguino",rarity:"Epic"},  {name:"Ti Ti Ti Sahur",rarity:"Epic"},  {name:"Wombo Rollo",rarity:"Epic"},  {name:"Burbaloni Loliloli",rarity:"Legendary"},  {name:"Chimpanzini Bananini",rarity:"Legendary"},  {name:"Frigo Camelo",rarity:"Legendary"},  {name:"Bandito Axolito",rarity:"Legendary"},  {name:"Caramello Filtrello",rarity:"Legendary"},  {name:"Chef Crabracadabra",rarity:"Legendary"},  {name:"Cocosini Mama",rarity:"Legendary"},  {name:"Sigma Boy",rarity:"Legendary"},  {name:"Sigma Girl",rarity:"Legendary"},  {name:"Orangutini Ananassini",rarity:"Mythic"},  {name:"Rhino Toasterino",rarity:"Mythic"},  {name:"Bombardiro Crocodilo",rarity:"Mythic"},  {name:"Bombombini Gusini",rarity:"Mythic"},  {name:"Gorillo Subwoofero",rarity:"Mythic"},  {name:"Los Noobinis",rarity:"Mythic"},  {name:"Orbi Mochi",rarity:"Mythic"},  {name:"Tree Tree Tree Sahur",rarity:"Mythic"},  {name:"Tralalero Tralala",rarity:"Brainrot God"},  {name:"Bombardiro Crocodilo",rarity:"Brainrot God"},  {name:"Tung Tung Tung Sahur",rarity:"Brainrot God"},  {name:"Giraffa Celeste",rarity:"Brainrot God"},  {name:"Trenostruzzo Turbo 3000",rarity:"Brainrot God"},  {name:"Cocofanto Elefanto",rarity:"Brainrot God"},  {name:"Los Crocodillitos",rarity:"Brainrot God"},  {name:"Matteo",rarity:"Brainrot God"},  {name:"Los Tungtungtungcitos",rarity:"Brainrot God"},  {name:"Trippi Troppi Troppa Trippa",rarity:"Brainrot God"},  {name:"1x1x1x1",rarity:"Secret"},  {name:"25",rarity:"Secret"},  {name:"67",rarity:"Secret"},  {name:"Abyssaloco",rarity:"Secret"},  {name:"Agarrini la Palini",rarity:"Secret"},  {name:"Blackhole Goat",rarity:"Secret"},  {name:"Bisonte Giuppitere",rarity:"Secret"},  {name:"Boatito Auratito",rarity:"Secret"},  {name:"Bombardiro Vaccariro",rarity:"Secret"},  {name:"Chachechi",rarity:"Secret"},  {name:"Dragon Cannelloni",rarity:"Secret"},  {name:"Dragon Aquanini",rarity:"Secret"},  {name:"Dragon Gingerini",rarity:"Secret"},  {name:"Garama and Madundung",rarity:"Secret"},  {name:"Graipuss Medussi",rarity:"Secret"},  {name:"Griffin",rarity:"Secret"},  {name:"Guest 666",rarity:"Secret"},  {name:"Hydra Dragon Cannelloni",rarity:"Secret"},  {name:"Jackorilla",rarity:"Secret"},  {name:"Karker Sahur",rarity:"Secret"},  {name:"La Grande Combinasion",rarity:"Secret"},  {name:"La Vacca Saturno Saturnita",rarity:"Secret"},  {name:"Las Tralaleritas",rarity:"Secret"},  {name:"Los Amigos",rarity:"Secret"},  {name:"Los Matteos",rarity:"Secret"},  {name:"Los Tralaleritos",rarity:"Secret"},  {name:"Nuclearo Dinossauro",rarity:"Secret"},  {name:"Sammyni Spyderini",rarity:"Secret"},  {name:"Tirilikalika Tirilikalako",rarity:"Secret"},  {name:"Trenostruzzo Turbo 4000",rarity:"Secret"},  {name:"Strawberry Elephant",rarity:"OG"},  {name:"Skibidi Toilet",rarity:"OG"},  {name:"John Pork",rarity:"OG"},  {name:"Meowl",rarity:"OG"},  {name:"Headless Horseman",rarity:"OG"},  {name:"Spyder Elephant",rarity:"OG"}];function showAll() {  const search = document.getElementById("search")    .value.toLowerCase().trim();  const rarity = document.getElementById("rarity").value;  const filtered = brainrots.filter(b =>    b.name.toLowerCase().includes(search) &&    (rarity === "All" || b.rarity === rarity)  );  document.getElementById("count").textContent =    filtered.length + " results found";  document.getElementById("results").innerHTML =    filtered.map(b =>      `<div class="card">        <div class="name">${b.name}</div>        <div class="rarity">${b.rarity}</div>      </div>`    ).join("") || "<p>No Brainrots found.</p>";}document.getElementById("search").addEventListener("input", showAll);document.getElementById("rarity").addEventListener("change", showAll);showAll();</script></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brainrot Finder</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#fff;font-family:Arial,sans-serif;padding:16px}
+header{text-align:center;padding:20px 0}
+h1{margin:0 0 8px;font-size:29px}
+header p,.muted{color:#aab4d0}
+.search{width:100%;padding:15px;border-radius:12px;border:1px solid #36415f;background:#171f35;color:white;font-size:16px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+button{padding:10px 12px;border:1px solid #35405e;border-radius:20px;background:#171f35;color:white;font-weight:bold}
+button.active{background:#7c3aed;border-color:#a78bfa}
+#count{font-size:13px;color:#aab4d0;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{background:#171f35;border:1px solid #303b5c;border-radius:15px;padding:14px;min-width:0}
+.emoji{font-size:36px}
+.card h3{font-size:15px;overflow-wrap:anywhere;min-height:36px}
+.tag{display:inline-block;padding:6px 8px;border-radius:8px;font-size:11px;font-weight:bold}
+.Common{background:#334155;color:#f1f5f9}
+.Rare{background:#1d4ed8;color:#dbeafe}
+.Epic{background:#7e22ce;color:#f3e8ff}
+.Legendary{background:#854d0e;color:#fef3c7}
+.Mythic{background:#9f1239;color:#ffe4e6}
+.God{background:#9a3412;color:#ffedd5}
+.Secret{background:#374151;color:#f9a8d4}
+.OG{background:#713f12;color:#fef08a}
+.empty{grid-column:1/-1;text-align:center;padding:25px;color:#aab4d0}
+footer{text-align:center;color:#8490af;font-size:12px;margin:30px 0}
+@media(min-width:650px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header>
+<h1>🧠 Brainrot Finder</h1>
+<p>Steal a Brainrot Companion Catalog</p>
+</header>
+
+<input class="search" id="search" placeholder="🔎 Search brainrots..." aria-label="Search brainrots">
+<div class="filters" id="filters"></div>
+<div id="count"></div>
+<div class="grid" id="grid"></div>
+<footer>Fan-made companion • Not affiliated with Roblox</footer>
+
+<script>
+const rarities=[
+"All","Common","Rare","Epic","Legendary","Mythic",
+"Brainrot God","Secret","OG"
+];
+
+const brainrots=[
+{name:"Noobini Pizzanini",rarity:"Common",emoji:"🍕"},
+{name:"Lirili Larila",rarity:"Common",emoji:"🐘"},
+{name:"Tim Cheese",rarity:"Common",emoji:"🧀"},
+{name:"Fluriflura",rarity:"Common",emoji:"🌸"},
+{name:"Trippi Troppi",rarity:"Rare",emoji:"🦐"},
+{name:"Tung Tung Tung Sahur",rarity:"Rare",emoji:"🪵"},
+{name:"Gangster Footera",rarity:"Rare",emoji:"🦶"},
+{name:"Boneca Ambalabu",rarity:"Epic",emoji:"🐸"},
+{name:"Cappuccino Assassino",rarity:"Epic",emoji:"☕"},
+{name:"Tralalero Tralala",rarity:"Epic",emoji:"🦈"},
+{name:"Bombardiro Crocodilo",rarity:"Legendary",emoji:"🐊"},
+{name:"Brr Brr Patapim",rarity:"Legendary",emoji:"🌳"},
+{name:"Chimpanzini Bananini",rarity:"Legendary",emoji:"🍌"},
+{name:"Ballerina Cappuccina",rarity:"Mythic",emoji:"🩰"},
+{name:"Cocofanto Elefanto",rarity:"Mythic",emoji:"🐘"},
+{name:"Frigo Camelo",rarity:"Mythic",emoji:"🐪"},
+{name:"Girafa Celeste",rarity:"God",emoji:"🦒"},
+{name:"Gattatino Nyanino",rarity:"God",emoji:"🐱"},
+{name:"Chicleteira Bicicleteira",rarity:"God",emoji:"🚲"},
+{name:"Odin Din Din Dun",rarity:"Secret",emoji:"⚡"},
+{name:"La Grande Combinasion",rarity:"Secret",emoji:"🧩"},
+{name:"Garama and Madundung",rarity:"Secret",emoji:"✨"},
+{name:"Strawberry Elephant",rarity:"OG",emoji:"🍓"}
+];
+
+const filterBox=document.getElementById("filters");
+const search=document.getElementById("search");
+const grid=document.getElementById("grid");
+const count=document.getElementById("count");
+let selected="All";
+
+rarities.forEach(r=>{
+ const b=document.createElement("button");
+ b.textContent=r;
+ b.className=r==="All"?"active":"";
+ b.onclick=()=>{
+  selected=r;
+  [...filterBox.children].forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  render();
+ };
+ filterBox.appendChild(b);
+});
+
+function render(){
+ const term=search.value.trim().toLowerCase();
+ const list=brainrots.filter(b=>
+  (selected==="All"||
+   (selected==="Brainrot God"?b.rarity==="God":b.rarity===selected))&&
+  b.name.toLowerCase().includes(term)
+ );
+ count.textContent=list.length+" brainrot"+(list.length===1?"":"s")+" found";
+ grid.innerHTML="";
+ if(!list.length){
+  grid.innerHTML='<div class="empty">No brainrots found. Try another search!</div>';
+  return;
+ }
+ list.forEach(b=>{
+  const card=document.createElement("article");
+  card.className="card";
+  const emoji=document.createElement("div");
+  emoji.className="emoji";
+  emoji.textContent=b.emoji;
+  const name=document.createElement("h3");
+  name.textContent=b.name;
+  const tag=document.createElement("span");
+  tag.className="tag "+b.rarity;
+  tag.textContent=b.rarity==="God"?"BRAINROT GOD":b.rarity.toUpperCase();
+  card.append(emoji,name,tag);
+  grid.appendChild(card);
+ });
+}
+search.addEventListener("input",render);
+render();
+</script>
+</body>
+</html>
